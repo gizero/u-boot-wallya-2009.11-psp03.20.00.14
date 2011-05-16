@@ -223,6 +223,12 @@
 #define CONFIG_BOOTDELAY	3
 
 /*
+ * More autoboot options
+ */
+#define CONFIG_AUTOBOOT_KEYED
+#define CONFIG_AUTOBOOT_STOP_STR "wallya"
+
+/*
  * U-Boot commands
  */
 #include <config_cmd_default.h>
