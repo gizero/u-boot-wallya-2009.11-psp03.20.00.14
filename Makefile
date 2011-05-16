@@ -2933,6 +2933,9 @@ cp922_XA10_config	\
 cp1026_config: unconfig
 	@board/armltd/integrator/split_by_variant.sh cp $@
 
+wallya_omapl138_config:	unconfig
+	@$(MKCONFIG) -a wallya arm arm926ejs wallya davinci davinci
+
 da850_omapl138_evm_config	\
 da850evm_config:	unconfig
 	@$(MKCONFIG) -a da850evm arm arm926ejs da8xxevm davinci davinci
