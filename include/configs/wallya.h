@@ -307,4 +307,9 @@
 
 #endif /* CONFIG_USB_DA8XX */
 
+/*
+ * LCDC
+ */
+#define CONFIG_LCDC_BL_ON
+
 #endif /* __CONFIG_H */

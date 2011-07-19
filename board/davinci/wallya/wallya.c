@@ -192,6 +192,12 @@ const struct pinmux_config nor_pins[] = {
 };
 #endif
 
+/* wallya lcdc pin muxer settings */
+const struct pinmux_config wallya_lcdc_pins[] = {
+	{ pinmux[1], 8, 2 },
+	{ pinmux[13], 8, 3 },
+};
+
 int board_init(void)
 {
 	unsigned int temp;
@@ -304,6 +310,21 @@ int board_init(void)
 		DAVINCI_UART_PWREMU_MGMT_UTRST),
 	       &davinci_uart2_ctrl_regs->pwremu_mgmt);
 
+#ifdef CONFIG_LCDC_BL_ON
+	if (davinci_configure_pin_mux(wallya_lcdc_pins, ARRAY_SIZE(wallya_lcdc_pins)) != 0)
+		return 1;
+
+	/* Set the backlight GPIO direction as output */
+	temp = REG(GPIO_BANK0_REG_DIR_ADDR);
+	temp &= ~(0x01 << 5);
+	REG(GPIO_BANK0_REG_DIR_ADDR) = temp;
+
+	/* Set the backlight output as high */
+	temp = REG(GPIO_BANK0_REG_SET_ADDR);
+	temp |= (0x01 << 5);
+	REG(GPIO_BANK0_REG_SET_ADDR) = temp;	
+#endif
+
 	return(0);
 }
 
@@ -375,7 +396,7 @@ int rmii_hw_init(void)
 	if (davinci_configure_pin_mux(gpio_pins, ARRAY_SIZE(gpio_pins)) != 0)
 		return 1;
 
-	/* I2C Exapnder configuration */
+	/* I2C Expander configuration */
 	/* Set polarity to non-inverted */
 	buf[0] = 0x0;
 	buf[1] = 0x0;
