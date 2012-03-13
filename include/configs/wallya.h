@@ -312,4 +312,9 @@
  */
 #define CONFIG_LCDC_BL_ON
 
+/*
+ * GLCD
+ */
+#define CONFIG_GLCD_BL_ON
+
 #endif /* __CONFIG_H */

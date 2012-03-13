@@ -198,6 +198,12 @@ const struct pinmux_config wallya_lcdc_pins[] = {
 	{ pinmux[13], 8, 3 },
 };
 
+/* wallya glcd pin muxer settings */
+const struct pinmux_config wallya_glcd_pins[] = {
+	{ pinmux[12], 8, 1 },
+	{ pinmux[5], 8, 0 },
+};
+
 int board_init(void)
 {
 	unsigned int temp;
@@ -323,6 +329,21 @@ int board_init(void)
 	temp = REG(GPIO_BANK0_REG_SET_ADDR);
 	temp |= (0x01 << 5);
 	REG(GPIO_BANK0_REG_SET_ADDR) = temp;	
+#endif
+
+#ifdef CONFIG_GLCD_BL_ON
+	if (davinci_configure_pin_mux(wallya_glcd_pins, ARRAY_SIZE(wallya_glcd_pins)) != 0)
+		return 1;
+
+	/* Set the backlight GPIO direction as output */
+	temp = REG(GPIO_BANK2_REG_DIR_ADDR);
+	temp &= ~(0x01 << 15);
+	REG(GPIO_BANK2_REG_DIR_ADDR) = temp;
+
+	/* Set the backlight output as high */
+	temp = REG(GPIO_BANK2_REG_SET_ADDR);
+	temp |= (0x01 << 15);
+	REG(GPIO_BANK2_REG_SET_ADDR) = temp;	
 #endif
 
 	return(0);
